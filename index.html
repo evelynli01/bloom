@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f5ee">
+  <title>BLOOM — A gesture garden</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script src="peony3d.js" defer></script>
+</head>
+<body>
+<main class="app">
+  <section class="stage spring" id="stage" aria-label="Interactive seasonal botanical garden">
+    <svg class="landscape" id="landscape" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+    <header class="toolbar">
+      <div class="identity"><div class="brand">BLOOM<span>.</span></div><span class="brand-sub">An interactive garden</span></div>
+      <nav class="toolbar-actions" aria-label="Garden controls">
+        <div class="garden-count" aria-live="polite"><span id="headerSeason">Spring</span><span class="count-separator" aria-hidden="true">/</span><span id="flowerCount">01 of 04</span></div>
+        <button class="button button-light" id="settingsBtn" type="button" aria-expanded="false" aria-controls="settingsPanel">Controls <span aria-hidden="true">⚙</span></button>
+      </nav>
+    </header>
+
+    <div class="artwork" aria-live="off">
+      <svg id="greenerySvg" viewBox="0 0 1000 740" aria-hidden="true"><defs><linearGradient id="greeneryGradient" x1="0" x2="1"><stop stop-color="#425f43"/><stop offset=".55" stop-color="#8aa47a"/><stop offset="1" stop-color="#547650"/></linearGradient></defs>        <g class="stem-art" aria-hidden="true">
+          <path d="M500 358 C488 458 520 572 501 730" fill="none" stroke="url(#greeneryGradient)" stroke-width="13" stroke-linecap="round"/>
+          <path d="M505 575 Q580 462 665 525 Q604 606 505 605Z" fill="#819b74" opacity=".88"/>
+          <path d="M502 635 Q435 513 332 555 Q393 650 501 665Z" fill="#6d8c69" opacity=".9"/>
+          <path d="M505 605 Q574 535 649 532 M502 664 Q424 575 349 558" stroke="#536f52" stroke-width="3" opacity=".45" fill="none"/>
+        </g></svg>
+      <canvas id="tulipCanvas" aria-label="Animated botanical tulip study"></canvas>
+      <svg id="flowerSvg" viewBox="0 0 1000 740" role="img" aria-label="Animated illustrated flower placeholder">
+        <defs>
+          <radialGradient id="petal" cx="50%" cy="72%" r="82%"><stop offset="0" stop-color="#fff9f2"/><stop offset=".43" stop-color="var(--petal-mid,#f1b6ca)"/><stop offset="1" stop-color="var(--petal-edge,#b9759c)"/></radialGradient>
+          <radialGradient id="center"><stop stop-color="#fff2ba"/><stop offset=".65" stop-color="#eab76a"/><stop offset="1" stop-color="#b77e4a"/></radialGradient>
+          <linearGradient id="stemGreen" x1="0" x2="1" y1="0" y2="0"><stop stop-color="#526d48"/><stop offset=".52" stop-color="#81946c"/><stop offset="1" stop-color="#435e3f"/></linearGradient>
+        </defs>
+
+        <g transform="translate(500 365) scale(1.16) translate(-500 -365)">
+          <g id="petalGroup"></g>
+          <g id="core"><circle cx="500" cy="365" r="27" fill="url(#center)"/><g id="stamens"></g></g>
+        </g>
+      </svg>
+    </div>
+
+    <nav class="flower-navigation" aria-label="Browse flowers">
+      <button class="flower-arrow previous" id="prevFlower" type="button" aria-label="Previous flower">&#8592;</button>
+      <button class="flower-arrow next" id="nextFlower" type="button" aria-label="Next flower">&#8594;</button>
+      <div class="flower-dots" id="flowerDots" aria-label="Choose a flower"></div>
+      <p class="browse-hint">Open your second hand, then make a full fist to see the next flower</p>
+    </nav>
+    <div class="progress" aria-live="off"><div class="progress-heading"><span>Bloom progress</span><output id="amount" for="bloomRange">35%</output></div><div class="progress-track"><div class="progress-fill" id="progressFill" style="width:35%"></div></div><p>Pinch to close · Spread to bloom</p></div>
+    <div class="season-atmosphere" id="stageNote">Spring / Fresh greens, soft breezes and early blooms.</div>
+
+    <div class="camera-dock">
+    <div class="flower-label"><div class="eyebrow" id="seasonPill">Spring / 01</div><h1 id="species">Paeonia / Peony</h1><p id="caption">A botanical bloom study that responds to your hand.</p></div>
+    <section class="pip" id="cameraBox" aria-label="Camera preview">
+      <div class="pip-header">
+        <div class="pip-title"><span class="pip-indicator" id="pipIndicator"></span> Your hand</div>
+      </div>
+      <div class="preview" id="preview"><video id="webcam" muted autoplay playsinline></video><canvas id="overlay" width="320" height="240" aria-hidden="true"></canvas><div class="camera-placeholder" id="cameraPlaceholder"><span class="placeholder-symbol" aria-hidden="true">✋</span><span>Enable camera to see<br>your hand tracking</span></div></div>
+      <div class="pip-footer"><span class="camera-status" id="cameraStatus" role="status">Camera off</span><div class="pip-buttons"><button class="button button-dark" id="cameraBtn" type="button">Enable</button><button class="button button-light" id="stopBtn" type="button" disabled>Stop</button></div></div>
+    </section>
+    </div>
+
+    <aside class="settings-panel" id="settingsPanel" hidden aria-label="Garden controls">
+      <div class="settings-heading"><h2>Garden controls</h2><button type="button" id="closeSettings" class="icon-button" aria-label="Close controls">×</button></div>
+      <div class="settings-section"><div class="settings-row"><label for="bloomRange">Bloom manually</label><span id="sliderValue">35%</span></div><input id="bloomRange" type="range" min="0" max="100" step="1" value="35"><div class="range-ends"><span>Closed</span><span>Fully open</span></div><p>Use the slider when the camera is off. Your hand takes over while detected.</p></div>
+      <div class="settings-section"><h3>Explore the garden</h3><p>Use the left and right arrows, swipe across the flower, or scroll horizontally on a trackpad. The garden changes seasons automatically as you browse.</p><p id="flower-fact"></p></div>
+      <div class="settings-section"><h3>Bloom artwork</h3><p>Four botanical studies — peony, iris, classic red rose, and gardenia. Pinch or spread to explore their layered petals.</p><p class="asset-status" id="assetStatus">Preparing the peony…</p></div>
+      <div class="settings-section"><h3>Hand controls</h3><p>The camera stays in the bottom-left corner, with the flower name above it. With two hands visible, use one to bloom. Show an open palm with your other hand, then close it into a fist to advance one flower. Reopen your palm to prepare the next change.</p></div>
+      <p class="settings-note">Desktop-first prototype. Webcam access is opt-in. All four flowers are stylized, gesture-controlled Canvas illustrations. The flower artwork runs locally. Hand tracking uses MediaPipe and needs internet access to load.</p>
+    </aside>
+  </section>
+</main>
+</body>
+</html>

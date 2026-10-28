@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bloom — petal study</title><link rel="stylesheet" href="style.css"></head>
+<body><main>
+<header><div><span class="eyebrow">BLOOM / BOTANICAL STUDIES</span><h1>A little unfolding.</h1></div><span class="edition">01 / Pink peony</span></header>
+<div class="art"><canvas id="flower" width="900" height="760" role="img" aria-label="Pink peony unfolding in layers"></canvas><span class="annotation">Paeonia<br><i>Softness, in motion.</i></span></div>
+<section class="controls" aria-label="Bloom controls"><div class="range-label"><label for="bloom">Unfold the peony</label><output id="amount" for="bloom">35%</output></div><input id="bloom" type="range" min="0" max="100" step="0.1" value="35"><div class="ends"><span>Gathered</span><span>In bloom</span></div><div class="buttons"><button id="close">← Close</button><button id="pause" aria-pressed="true">Pause</button><button id="open">Open →</button><button id="camera">Use my hand</button></div><p id="status" role="status">Drag the slider, or play the bloom in either direction.</p></section>
+<aside id="cameraPanel" hidden><video id="webcam" playsinline muted></video><span>Pinch to close · Spread to bloom</span><button id="stopCamera" aria-label="Stop camera">×</button></aside>
+<footer>Canvas botanical study · Made of individual curved petals<span>Space: play / pause · Arrow keys: scrub</span></footer>
+</main><script src="flower.js"></script><script src="demo.js"></script></body></html>

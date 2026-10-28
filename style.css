@@ -1,0 +1,85 @@
+
+:root{--ink:#283a30;--muted:#54675b;--accent:#3c604b;--paper:#f6f5ee;--line:rgba(53,77,61,.17)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}body{background:var(--paper)}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #638a6c;outline-offset:3px}button:disabled{opacity:.48;cursor:not-allowed}p{margin:0;line-height:1.5}
+.app{min-height:100svh}.stage{min-height:650px;height:100svh;position:relative;overflow:hidden;isolation:isolate;transition:background .5s}.stage:before{content:"";position:absolute;inset:16px;border:1px solid rgba(72,94,74,.14);pointer-events:none;z-index:3}.stage.spring{background:radial-gradient(ellipse at 51% 40%,#fffffa 0%,#f5f7ec 54%,#e5ecdc 100%)}.stage.summer{background:radial-gradient(ellipse at 51% 40%,#fffdf4 0%,#f8eed9 57%,#f0d9b6 100%)}.stage.autumn{background:radial-gradient(ellipse at 51% 40%,#fffaf2 0%,#f6e9dc 56%,#e7d0bd 100%)}.stage.winter{background:radial-gradient(ellipse at 51% 40%,#fff 0%,#f0f6f8 56%,#dce9ef 100%)}.landscape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.55;z-index:0}
+.toolbar{position:absolute;z-index:6;top:35px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;gap:24px}.identity{display:flex;align-items:baseline;gap:18px}.brand{font:normal 29px Georgia,serif;letter-spacing:.2em}.brand span{color:#bb7691}.brand-sub{font-size:11px;letter-spacing:.08em;color:var(--muted)}.toolbar-actions{display:flex;align-items:center;gap:9px}.control-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-left:8px}.toolbar select{max-width:150px;padding:9px 28px 9px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.73);color:var(--ink);font-size:12px}.button{border:1px solid var(--line);border-radius:999px;padding:9px 13px;font-size:11px;font-weight:650;white-space:nowrap}.button-light{background:rgba(255,255,255,.76);color:var(--ink)}.button-dark{background:#355a43;border-color:#355a43;color:white}.button:hover:not(:disabled){filter:brightness(.96)}
+.artwork{position:absolute;z-index:1;inset:12% 11% 9%;pointer-events:none;filter:drop-shadow(0 17px 20px rgba(61,53,55,.08))}.artwork svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.flower-label{position:absolute;z-index:4;left:clamp(30px,4vw,68px);bottom:clamp(37px,6vh,78px);max-width:390px;pointer-events:none}.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#58705e}.flower-label h1{font:italic clamp(25px,2.7vw,40px)/1.2 Georgia,serif;margin:9px 0 8px}.flower-label p{font-size:11px;color:var(--muted);max-width:280px}.progress{position:absolute;z-index:4;right:clamp(30px,4vw,68px);bottom:clamp(40px,6vh,78px);width:210px;pointer-events:none}.progress-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.13em}.progress-heading output{font:normal 26px Georgia,serif;letter-spacing:0}.progress-track{margin:12px 0 10px;height:4px;background:rgba(60,96,75,.2);border-radius:20px;overflow:hidden}.progress-fill{height:100%;background:#507a5c;transition:width .09s linear}.progress p{font-size:11px;color:var(--muted)}.season-atmosphere{position:absolute;z-index:2;top:105px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted);letter-spacing:.08em;text-align:center;white-space:nowrap}
+.pip{position:absolute;z-index:8;left:34px;bottom:205px;width:clamp(210px,20vw,292px);background:rgba(250,250,245,.96);border:1px solid rgba(55,81,60,.2);border-radius:15px;overflow:hidden;box-shadow:0 12px 34px rgba(38,56,43,.16);user-select:none}.pip-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;cursor:default}.pip-title{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700}.pip-indicator{display:inline-block;width:7px;height:7px;border-radius:50%;background:#a6aea4}.pip.active .pip-indicator{background:#54a36c;box-shadow:0 0 0 3px rgba(84,163,108,.13)}.preview{position:relative;aspect-ratio:4/3;background:#26352c;overflow:hidden}.preview video,.preview canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}.preview canvas{z-index:2;pointer-events:none}.camera-placeholder{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#e3ece1;text-align:center;font-size:11px;line-height:1.6;background:radial-gradient(circle,#435d49,#25382c)}.placeholder-symbol{font-size:34px}.pip.active .camera-placeholder{display:none}.pip-footer{padding:9px 11px 11px;display:flex;align-items:center;justify-content:space-between;gap:8px}.camera-status{font-size:10px;color:#48634e;line-height:1.35;min-width:0;flex:1;overflow-wrap:anywhere}.pip-buttons{display:flex;gap:5px;align-items:center}.pip .button{font-size:10px;padding:6px 9px}
+.settings-panel{position:absolute;z-index:10;top:98px;right:34px;width:min(360px,calc(100vw - 60px));max-height:calc(100svh - 125px);overflow:auto;border-radius:16px;background:rgba(252,251,247,.98);border:1px solid var(--line);box-shadow:0 16px 45px rgba(32,55,40,.18);padding:21px 22px}.settings-panel[hidden]{display:none}.settings-heading{display:flex;justify-content:space-between;align-items:center}.settings-heading h2{font:normal 24px Georgia,serif;margin:0}.icon-button{background:transparent;border:0;color:var(--ink);font-size:26px;line-height:1;padding:3px 6px}.settings-section{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:11px}.settings-section h3,.settings-row label{margin:0;font-size:12px;font-weight:750}.settings-row{display:flex;justify-content:space-between;align-items:center}.settings-row span{font:normal 21px Georgia,serif;color:var(--accent)}.settings-section p,.settings-note{font-size:11px;line-height:1.6;color:var(--muted)}input[type=range]{width:100%;accent-color:#4d7758}.range-ends{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.seasons,.flowers{display:grid;gap:6px}.seasons{grid-template-columns:repeat(4,1fr)}.flowers{grid-template-columns:1fr 1fr}.season-btn,.flower-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 5px;color:var(--ink);font-size:11px}.season-btn[aria-pressed=true],.flower-btn[aria-pressed=true]{border-color:#65836e;background:#e8f0e7}.flower-btn{text-align:left;padding:10px;font:normal 15px Georgia,serif}.flower-btn small{display:block;font:normal 10px system-ui;color:var(--muted);margin-top:4px}.settings-note{padding-top:16px}
+@media(max-width:900px){.stage{min-height:610px}.toolbar{top:28px;left:30px;right:30px}.brand-sub,.control-label,.season-atmosphere{display:none}.artwork{inset:13% 5% 12%}.pip{width:205px;bottom:172px;left:25px}.progress{width:170px;right:30px}.flower-label{left:30px}}@media(max-height:730px){.pip{bottom:145px;width:210px}.flower-label,.progress{bottom:38px}.artwork{inset:15% 9% 11%}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* v0.4: keep the entire flower in view, with breathing room around the petals. */
+.artwork{inset:13% 10% 11%;}
+.artwork svg{overflow:visible}
+/* The flower's SVG transform is intentionally 1.16x instead of 1.62x:
+   its fully-open petals fit inside the viewBox at 100% bloom. */
+
+/* The header controls share a common baseline and have consistent spacing. */
+.toolbar{align-items:center;gap:24px}
+.toolbar-actions{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.nav-field{display:flex;align-items:center;gap:9px;min-height:38px}
+.nav-field .control-label{margin:0;line-height:1}
+.toolbar select{width:118px;max-width:none;min-height:38px;padding:8px 30px 8px 14px}
+#settingsBtn{min-height:38px;padding:9px 16px}
+
+/* The season is represented through the background palette; no floating
+   description over the petals. Season context remains in the control panel. */
+.season-atmosphere{display:none}
+
+/* Slightly clearer seasonal atmosphere, while leaving the flower in focus. */
+.stage.spring{background:radial-gradient(ellipse at 51% 40%,#fffffb 0%,#f4f7ed 52%,#e3eedc 100%)}
+.stage.summer{background:radial-gradient(ellipse at 51% 40%,#fffdf6 0%,#faefd9 52%,#efd6a7 100%)}
+.stage.autumn{background:radial-gradient(ellipse at 51% 40%,#fffaf5 0%,#f4e8dc 50%,#e5c7b5 100%)}
+.stage.winter{background:radial-gradient(ellipse at 51% 40%,#fff 0%,#eef5f9 51%,#d4e5ed 100%)}
+
+@media(max-width:900px){
+  .toolbar-actions{gap:9px}
+  .nav-field{gap:5px}
+  .toolbar select{width:105px}
+  .artwork{inset:16% 5% 12%}
+}
+@media(max-height:730px){.artwork{inset:17% 10% 13%}}
+
+/* v0.5 — one continuous flower gallery; season changes automatically. */
+.garden-count{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;letter-spacing:.07em;white-space:nowrap}
+#headerSeason{font-weight:700;color:var(--ink)}.count-separator{color:#a0afa3}
+.flower-navigation{position:absolute;inset:0;z-index:5;pointer-events:none}
+.flower-arrow{position:absolute;top:48%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.78);color:var(--ink);font-size:23px;line-height:1;display:grid;place-items:center;pointer-events:auto;box-shadow:0 4px 18px rgba(41,56,42,.05);transition:background .2s,transform .2s}
+.flower-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+.flower-arrow.previous{left:clamp(22px,4vw,64px)}.flower-arrow.next{right:clamp(22px,4vw,64px)}
+.flower-dots{position:absolute;bottom:33px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;pointer-events:auto}
+.flower-dot{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:rgba(62,94,71,.26);transition:background .2s,transform .2s}
+.flower-dot[aria-current=true]{background:#3c604b;transform:scale(1.4)}.flower-dot:hover{background:#56755d}
+.browse-hint{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:10px;white-space:nowrap;letter-spacing:.03em}
+.artwork{pointer-events:auto;touch-action:pan-y;cursor:grab}.artwork:active{cursor:grabbing}.artwork svg{pointer-events:none}
+@media(max-width:900px){.flower-arrow{width:36px;height:36px;font-size:19px}.flower-arrow.previous{left:18px}.flower-arrow.next{right:18px}.browse-hint{display:none}}
+
+/* v0.6: tulip canvas is an overlay, not an additional page panel. */
+.artwork #tulipCanvas{position:absolute;inset:0;width:100%;height:100%;display:none;pointer-events:none;object-fit:contain}
+
+/* Keep gallery arrows clear of the default bottom-left camera panel. */
+.flower-arrow{top:38%}
+
+/* Canvas peony shares the existing artwork area and preserves swipe gestures. */
+.artwork #peonyCanvas{position:absolute;inset:0;width:100%;height:100%;display:none;pointer-events:none}
+
+/* Shared botanical stem: visible behind all flower renderers. */
+.artwork #greenerySvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+.artwork #flowerSvg,.artwork #tulipCanvas,.artwork #peonyCanvas{z-index:1}
+.artwork #greenerySvg .stem-art{filter:drop-shadow(1px 3px 2px rgba(42,72,48,.12))}
+
+/* Keep the preview and its flower label together, clear of one another. */
+.camera-dock{position:absolute;z-index:8;left:clamp(24px,4vw,64px);bottom:28px;width:clamp(230px,20vw,300px);display:grid;gap:14px}
+.camera-dock .flower-label{position:static;max-width:none;width:100%;min-width:0}
+.camera-dock .flower-label h1{font-size:clamp(22px,2vw,30px);overflow-wrap:break-word}
+.camera-dock .pip{position:relative;inset:auto;width:100%;max-width:none;resize:none}
+@media(max-width:900px){.camera-dock{left:24px;width:220px}.camera-dock .flower-label h1{font-size:22px}}
+@media(max-height:730px){.stage{min-height:700px}.camera-dock{width:210px;bottom:26px;gap:12px}.camera-dock .flower-label h1{font-size:21px}}
+/* Narrow screens reserve separate vertical space for artwork, camera and progress. */
+@media(max-width:640px){
+ .stage{min-height:1000px}
+ .artwork{inset:110px 5% auto;height:340px}
+ .camera-dock{left:24px;bottom:130px;width:230px;max-width:calc(100% - 48px)}
+ .progress{left:24px;right:24px;bottom:55px;width:auto}
+ .flower-dots{bottom:26px}
+}
