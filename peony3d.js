@@ -191,16 +191,16 @@ class CanvasPeony {
   };
   if(species==='rose'){
    // Broad guard petals release around a high, still-folded central cup.
-   ring(5,2.35,.89,0,2.36,0,.84,0);
-   ring(6,2.02,.80,.13,2.05,.05,.92,1);
-   ring(7,1.67,.68,.25,1.72,.13,.98,2);
+   ring(5,2.35,.89,0,2.36,0,1,0);
+   ring(6,2.02,.80,.13,2.05,.05,1,1);
+   ring(7,1.67,.68,.25,1.72,.13,1,2);
    ring(6,1.30,.51,.37,1.28,.22,1,3);
    ring(5,.94,.36,.47,.84,.30,1,4);
    ring(3,.65,.25,.52,.59,.36,1,5);
   }else if(species==='gardenia'){
    // A double gardenia: broad ivory lobes surrounding folded inner whorls.
-   ring(7,2.22,.85,0,2.27,0,.86,0);
-   ring(6,1.80,.74,.12,1.96,.07,.94,1);
+   ring(7,2.22,.85,0,2.27,0,1,0);
+   ring(6,1.80,.74,.12,1.96,.07,1,1);
    ring(5,1.36,.58,.24,1.55,.16,1,2);
    ring(4,.94,.40,.35,1.12,.24,1,3);
    ring(3,.61,.27,.43,.76,.32,1,4);
@@ -217,10 +217,13 @@ class CanvasPeony {
  }
  botanicalSurface(p,species){
   const iris=species==='iris',gardenia=species==='gardenia';
-  const start=iris?0:Math.max(0,p.start+p.phase),end=iris?1:Math.min(1,p.end+p.phase);
-  const progress=clamp((this.progress-start)/(end-start));
+  // Stagger the starts, but every petal finishes at exactly 100%.
+  // Variation affects release timing only, never the completion percentage.
+  const start=iris?0:Math.max(0,p.start+p.phase);
+  const progress=clamp((this.progress-start)/(1-start));
   // Iris responds immediately; avoid a delay followed by two ease-in curves.
-  const q=iris?.65*progress+.35*ease(progress):ease(progress);
+  // Keep meaningful motion in the last third for rose and gardenia.
+  const q=iris?.65*progress+.35*ease(progress):progress*(.8+.2*progress);
   const spine=[];
   let radius=iris?.045:.10,z=p.height,previous=0;
   for(let i=0;i<=64;i++){
@@ -230,7 +233,8 @@ class CanvasPeony {
     ? .65+(p.angle-.65)*Math.pow(t,1.65)
     : .28+(p.angle-.28)*Math.pow(t,iris?.90:1.12);
    // The tip lags the base slightly, then reaches its final bend at 100%.
-   const local=iris?q+.12*q*(1-q)*(1-t):ease(clamp(q*(1.16-.16*t)));
+   // A small tip lag fades continuously; no second ease or early clamping.
+   const local=iris?q+.12*q*(1-q)*(1-t):q-.14*q*(1-q)*t;
    const angle=mix(closed,opened,local);
    if(i){const a=(previous+angle)/2;radius+=Math.sin(a)*p.length/64;z+=Math.cos(a)*p.length/64;}
    spine.push({radius,z,angle});previous=angle;
