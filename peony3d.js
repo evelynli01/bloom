@@ -63,7 +63,7 @@ class CanvasPeony {
   this.buildPetals(rings);
   this.stamens=Array.from({length:38},()=>({a:rand()*TAU,r:.06+Math.sqrt(rand())*.25,h:.80+rand()*.20}));
   this.onResize=()=>this.resize();
-  if('ResizeObserver' in window){this.observer=new ResizeObserver(this.onResize);this.observer.observe(canvas.parentElement);}
+  if('ResizeObserver' in window && canvas.parentElement){this.observer=new ResizeObserver(this.onResize);this.observer.observe(canvas.parentElement);}
   window.addEventListener('resize',this.onResize);
  }
  buildPetals(rings){

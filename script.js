@@ -318,6 +318,7 @@ function backdrop(s) {
 // Flower gallery navigation.
 let flowerTransitioning = false;
 function showFlower(index) {
+  if (window.BLOOM_GUIDE_OPEN) return;
   const next = (index + GARDEN.length) % GARDEN.length;
   if (next === gardenIndex || flowerTransitioning) return;
   const direction = index > gardenIndex ? 1 : -1;
@@ -456,6 +457,7 @@ range.addEventListener('input', () => {
 let stream = null;
 let landmarker = null;
 let cameraActive = false;
+let cameraRequest = 0;
 let raf = 0;
 let lastVideoTime = -1;
 let smoothed = null;
@@ -513,12 +515,13 @@ async function startCamera() {
   }
 
   const btn = $('cameraBtn');
+  const request = ++cameraRequest;
 
   btn.disabled = true;
   btn.textContent = 'Starting…';
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
+    const requestedStream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: 'user',
         width: { ideal: 640 },
@@ -527,8 +530,14 @@ async function startCamera() {
       audio: false
     });
 
+    if (request !== cameraRequest) {
+      requestedStream.getTracks().forEach(track => track.stop());
+      return;
+    }
+    stream = requestedStream;
     webcam.srcObject = stream;
     await webcam.play();
+    if (request !== cameraRequest) return;
 
     $('cameraStatus').textContent = 'Loading hand tracking…';
 
@@ -540,8 +549,10 @@ async function startCamera() {
       'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
     );
 
+    if (request !== cameraRequest) return;
+    let requestedLandmarker;
     try {
-      landmarker = await mod.HandLandmarker.createFromOptions(
+      requestedLandmarker = await mod.HandLandmarker.createFromOptions(
         vision,
         {
           baseOptions: {
@@ -554,7 +565,8 @@ async function startCamera() {
         }
       );
     } catch (_) {
-      landmarker = await mod.HandLandmarker.createFromOptions(
+      if (request !== cameraRequest) return;
+      requestedLandmarker = await mod.HandLandmarker.createFromOptions(
         vision,
         {
           baseOptions: {
@@ -568,6 +580,12 @@ async function startCamera() {
       );
     }
 
+    if (request !== cameraRequest) {
+      requestedLandmarker.close();
+      return;
+    }
+    landmarker?.close();
+    landmarker = requestedLandmarker;
     cameraActive = true;
 
     $('cameraBox').classList.add('active');
@@ -578,18 +596,23 @@ async function startCamera() {
 
     tick();
   } catch (err) {
+    if (request !== cameraRequest) return;
     $('cameraStatus').textContent =
       'Could not start hand tracking: ' +
       (err?.message || 'Check camera permissions and internet connection.');
 
     stopCamera();
   } finally {
-    btn.disabled = cameraActive;
+    if (request === cameraRequest) btn.disabled = cameraActive;
   }
 }
 
 function tick() {
   if (!cameraActive) return;
+  if (window.BLOOM_GUIDE_OPEN) {
+    raf = requestAnimationFrame(tick);
+    return;
+  }
 
   try {
     if (
@@ -755,6 +778,7 @@ function tick() {
 }
 
 function stopCamera() {
+  ++cameraRequest;
   cameraActive = false;
   cancelAnimationFrame(raf);
 
@@ -914,6 +938,7 @@ $('closeSettings').addEventListener(
 
 // Keyboard navigation.
 document.addEventListener('keydown', e => {
+  if (window.BLOOM_GUIDE_OPEN) return;
   if (e.key === 'Escape') {
     toggleSettings(false);
   }
@@ -937,6 +962,24 @@ document.addEventListener('keydown', e => {
 });
 
 // The camera and flower label share a fixed CSS corner dock.
+
+// Tutorial controls; existing tracking and flower navigation remain shared.
+window.BloomGuide = {
+  cameraIsActive() { return cameraActive; },
+  startCamera() { return startCamera(); },
+  stopCamera() {
+    stopCamera();
+    $('cameraStatus').textContent = 'Camera off · use the slider or enable when ready';
+  },
+  resume() {
+    navigationHand = { armed:false, pose:null, since:0 };
+    lastHandFrame = 0;
+  },
+  openManual() {
+    toggleSettings(true);
+    range.focus();
+  }
+};
 
 // Start Bloom.
 render();

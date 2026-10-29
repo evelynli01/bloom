@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
   <script src="peony3d.js" defer></script>
+  <script src="welcome.js" defer></script>
 </head>
 <body>
 <main class="app">
@@ -17,6 +18,7 @@
       <div class="identity"><div class="brand">BLOOM<span>.</span></div><span class="brand-sub">An interactive garden</span></div>
       <nav class="toolbar-actions" aria-label="Garden controls">
         <div class="garden-count" aria-live="polite"><span id="headerSeason">Spring</span><span class="count-separator" aria-hidden="true">/</span><span id="flowerCount">01 of 04</span></div>
+        <button class="button button-light" id="gestureHelp" type="button">Gesture help</button>
         <button class="button button-light" id="settingsBtn" type="button" aria-expanded="false" aria-controls="settingsPanel">Controls <span aria-hidden="true">⚙</span></button>
       </nav>
     </header>
@@ -54,6 +56,7 @@
 
     <div class="camera-dock">
     <div class="flower-label"><div class="eyebrow" id="seasonPill">Spring / 01</div><h1 id="species">Paeonia / Peony</h1><p id="caption">A botanical bloom study that responds to your hand.</p></div>
+    <p class="camera-gesture-hint"><strong>Bloom hand:</strong> thumb + index apart ↔ together<br><strong>Other hand:</strong> open palm → pause → full fist</p>
     <section class="pip" id="cameraBox" aria-label="Camera preview">
       <div class="pip-header">
         <div class="pip-title"><span class="pip-indicator" id="pipIndicator"></span> Your hand</div>
@@ -73,5 +76,106 @@
     </aside>
   </section>
 </main>
+<dialog id="gestureGuide" class="gesture-guide" aria-labelledby="guideTitle">
+  <button class="icon-button guide-close" id="closeGuide" type="button" aria-label="Skip gesture tutorial">×</button>
+  <div class="guide-heading">
+    <p class="eyebrow">BLOOM · A quick guide</p>
+    <p class="guide-progress" id="guideProgress" aria-live="polite">Step 1 of 3</p>
+    <h2 id="guideTitle" tabindex="-1">Start with just one hand.</h2>
+    <p id="guideIntro">Either hand works. The first hand the camera sees becomes your bloom hand.</p>
+  </div>
+  <section class="guide-step" data-guide-step="0">
+    <div class="guide-demonstration"><svg class="gesture-drawing pinch-drawing" viewBox="0 0 210 145" aria-hidden="true">
+        <g class="hand-lines">
+          <!-- Curled fingers sit behind the index, as in the reference. -->
+          <path d="M61 35 Q62 21 73 16 L88 10 Q95 7 101 15 L116 35 L111 54 Z" fill="#d4e2cc"/>
+          <path d="M75 19 Q84 22 90 31 M90 16 Q99 22 105 34" fill="none" stroke-width="1.3"/>
+          <path d="M59 43 Q57 60 63 66 Q69 68 72 52 L73 49 Q69 66 75 71 Q81 73 84 56 L85 43 Z" fill="#d4e2cc"/>
+          <!-- One continuous contour keeps the fingers attached to the palm. -->
+          <path class="pinch-outline" d="M155 108 C136 100 127 88 122 72 L117 45 Q115 32 103 29 L80 21 Q72 19 65 24 L46 35 L24 49 Q17 52 21 56 Q25 60 32 56 L51 43 Q57 42 62 47 L76 53 Q83 55 86 62 Q87 72 76 79 Q67 83 58 80 L33 69 Q23 64 19 69 Q15 74 22 79 L49 91 Q61 106 80 114 L125 140 L167 140 Z"/>
+          <path d="M110 47 Q114 61 113 73 M86 89 Q97 95 105 108 M72 29 L77 37" fill="none" stroke-width="1.3" opacity=".6"/>
+          <g class="bloom-index">
+            <path d="M28 49 Q33 45 39 44 L35 50 Q31 53 27 53" fill="none" stroke-width="1.1"/>
+            <circle cx="24" cy="53" r="3.5" class="finger-tip"/>
+          </g>
+          <g class="bloom-thumb">
+            <path d="M26 71 Q32 68 39 74 L34 79 Q29 77 26 75 Z" fill="none" stroke-width="1.1"/>
+            <circle cx="24" cy="73" r="3.5" class="finger-tip"/>
+          </g>
+        </g>
+        <text x="170" y="44" text-anchor="middle">Pinch</text>
+        <text x="170" y="65" text-anchor="middle">↕</text>
+        <text x="170" y="86" text-anchor="middle">Spread</text>
+      </svg></div>
+    <div class="guide-explanation">
+      <span class="hand-role bloom-role">Hand 1 · Bloom</span>
+      <h3>Move only your thumb and index finger.</h3>
+      <p><strong>Move those two fingertips apart</strong> to open the flower. <strong>Bring them together</strong> to close it.</p>
+      <p class="guide-tip">Start with your other hand out of view. Once the flower responds, keep this first hand visible.</p>
+    </div>
+  </section>
+  <section class="guide-step" data-guide-step="1" hidden>
+    <div class="guide-demonstration"><svg class="gesture-drawing" viewBox="0 0 210 130" aria-hidden="true">
+        <g class="hand-lines switch-open"><path d="M37 100 L24 80 L15 64 Q10 54 18 52 L35 67 L31 32 Q30 23 36 23 Q42 23 43 31 L46 54 L46 19 Q46 10 52 10 Q59 10 59 19 L60 53 L63 25 Q64 17 70 20 Q76 22 74 30 L72 58 L79 39 Q82 32 87 36 Q91 39 88 46 L79 85 L71 100 Z"/></g>
+        <path d="M100 61 H124 M118 55 L124 61 L118 67" class="gesture-arrow"/>
+        <g class="hand-lines switch-fist"><path d="M149 100 L140 79 L139 55 Q139 46 146 46 L150 46 Q150 39 158 40 L163 42 Q168 36 175 43 Q183 40 189 48 L193 68 Q196 84 184 100 Z M141 62 Q150 56 162 62 L176 70 Q181 76 175 80 L155 76 M151 47 L153 59 M164 44 L166 61 M177 46 L179 63"/></g>
+        <text x="54" y="121" text-anchor="middle">Open palm</text><text x="169" y="121" text-anchor="middle">Full fist</text>
+      </svg></div>
+    <div class="guide-explanation">
+      <span class="hand-role switch-role">Hand 2 · Switch flowers</span>
+      <h3>Open palm → full fist.</h3>
+      <ol class="switch-instructions">
+        <li>Bring your <strong>other hand</strong> into view, keeping your bloom hand visible.</li>
+        <li>Face the camera with <strong>all five fingers spread</strong>. Pause briefly.</li>
+        <li><strong>Close all five fingers into a fist</strong> to move to the next flower.</li>
+      </ol>
+      <p class="guide-tip"><strong>Open that hand again before each switch.</strong> Holding a fist won’t keep changing flowers. A thumb/index pinch is for blooming, not switching.</p>
+    </div>
+  </section>
+  <section class="guide-step guide-together" data-guide-step="2" hidden>
+    <div class="two-hand-demo">
+      <div class="hand-demo bloom-demo"><span class="hand-role bloom-role">Hand 1 · Keep blooming</span><svg class="gesture-drawing pinch-drawing" viewBox="0 0 210 145" aria-hidden="true">
+        <g class="hand-lines">
+          <!-- Curled fingers sit behind the index, as in the reference. -->
+          <path d="M61 35 Q62 21 73 16 L88 10 Q95 7 101 15 L116 35 L111 54 Z" fill="#d4e2cc"/>
+          <path d="M75 19 Q84 22 90 31 M90 16 Q99 22 105 34" fill="none" stroke-width="1.3"/>
+          <path d="M59 43 Q57 60 63 66 Q69 68 72 52 L73 49 Q69 66 75 71 Q81 73 84 56 L85 43 Z" fill="#d4e2cc"/>
+          <!-- One continuous contour keeps the fingers attached to the palm. -->
+          <path class="pinch-outline" d="M155 108 C136 100 127 88 122 72 L117 45 Q115 32 103 29 L80 21 Q72 19 65 24 L46 35 L24 49 Q17 52 21 56 Q25 60 32 56 L51 43 Q57 42 62 47 L76 53 Q83 55 86 62 Q87 72 76 79 Q67 83 58 80 L33 69 Q23 64 19 69 Q15 74 22 79 L49 91 Q61 106 80 114 L125 140 L167 140 Z"/>
+          <path d="M110 47 Q114 61 113 73 M86 89 Q97 95 105 108 M72 29 L77 37" fill="none" stroke-width="1.3" opacity=".6"/>
+          <g class="bloom-index">
+            <path d="M28 49 Q33 45 39 44 L35 50 Q31 53 27 53" fill="none" stroke-width="1.1"/>
+            <circle cx="24" cy="53" r="3.5" class="finger-tip"/>
+          </g>
+          <g class="bloom-thumb">
+            <path d="M26 71 Q32 68 39 74 L34 79 Q29 77 26 75 Z" fill="none" stroke-width="1.1"/>
+            <circle cx="24" cy="73" r="3.5" class="finger-tip"/>
+          </g>
+        </g>
+        <text x="170" y="44" text-anchor="middle">Pinch</text>
+        <text x="170" y="65" text-anchor="middle">↕</text>
+        <text x="170" y="86" text-anchor="middle">Spread</text>
+      </svg><p>Thumb + index apart ↔ together</p></div>
+      <div class="hand-demo switch-demo"><span class="hand-role switch-role">Hand 2 · Switch when ready</span><svg class="gesture-drawing" viewBox="0 0 210 130" aria-hidden="true">
+        <g class="hand-lines switch-open"><path d="M37 100 L24 80 L15 64 Q10 54 18 52 L35 67 L31 32 Q30 23 36 23 Q42 23 43 31 L46 54 L46 19 Q46 10 52 10 Q59 10 59 19 L60 53 L63 25 Q64 17 70 20 Q76 22 74 30 L72 58 L79 39 Q82 32 87 36 Q91 39 88 46 L79 85 L71 100 Z"/></g>
+        <path d="M100 61 H124 M118 55 L124 61 L118 67" class="gesture-arrow"/>
+        <g class="hand-lines switch-fist"><path d="M149 100 L140 79 L139 55 Q139 46 146 46 L150 46 Q150 39 158 40 L163 42 Q168 36 175 43 Q183 40 189 48 L193 68 Q196 84 184 100 Z M141 62 Q150 56 162 62 L176 70 Q181 76 175 80 L155 76 M151 47 L153 59 M164 44 L166 61 M177 46 L179 63"/></g>
+        <text x="54" y="121" text-anchor="middle">Open palm</text><text x="169" y="121" text-anchor="middle">Full fist</text>
+      </svg><p>Open palm → pause → full fist</p></div>
+    </div>
+    <p class="together-instruction"><strong>Keep both hands visible.</strong> Your first hand keeps controlling the petals while your other hand changes the flower.</p>
+    <p class="guide-tip">There’s no need to move both hands at exactly the same moment. You can hold your bloom hand steady while switching. Reopen your switching hand to prepare the next change.</p>
+  </section>
+  <footer class="guide-footer">
+    <div class="guide-navigation">
+      <button class="button button-light" id="guideBack" type="button" hidden>Back</button>
+      <button class="button button-dark" id="guideNext" type="button">Next: your other hand →</button>
+    </div>
+    <button class="guide-manual" id="guideManual" type="button">Use the slider instead</button>
+    <p id="guideCameraNote">Camera access is optional and starts only when you choose to enable it.</p>
+  </footer>
+</dialog>
+
+
 </body>
 </html>

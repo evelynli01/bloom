@@ -69,10 +69,15 @@
 .artwork #greenerySvg .stem-art{filter:drop-shadow(1px 3px 2px rgba(42,72,48,.12))}
 
 /* Keep the preview and its flower label together, clear of one another. */
-.camera-dock{position:absolute;z-index:8;left:clamp(24px,4vw,64px);bottom:28px;width:clamp(230px,20vw,300px);display:grid;gap:14px}
+/* Reserve space below the arrows (38% + their radius + a clear gap). */
+.camera-dock{position:absolute;z-index:8;left:clamp(24px,4vw,64px);top:calc(38% + 40px);bottom:28px;width:clamp(230px,20vw,300px);display:grid;grid-template-rows:auto auto minmax(0,auto);align-content:end;gap:14px}
 .camera-dock .flower-label{position:static;max-width:none;width:100%;min-width:0}
 .camera-dock .flower-label h1{font-size:clamp(22px,2vw,30px);overflow-wrap:break-word}
-.camera-dock .pip{position:relative;inset:auto;width:100%;max-width:none;resize:none}
+.camera-dock .pip{position:relative;inset:auto;width:100%;max-width:none;resize:none;min-height:0;display:flex;flex-direction:column}
+.camera-dock .pip-header,.camera-dock .pip-footer{flex:none}
+.camera-dock .preview{flex:1 1 auto;min-height:0}
+/* Preserve the full camera frame and aligned landmarks if the preview shrinks. */
+.camera-dock .preview video,.camera-dock .preview canvas{object-fit:contain}
 @media(max-width:900px){.camera-dock{left:24px;width:220px}.camera-dock .flower-label h1{font-size:22px}}
 @media(max-height:730px){.stage{min-height:700px}.camera-dock{width:210px;bottom:26px;gap:12px}.camera-dock .flower-label h1{font-size:21px}}
 /* Narrow screens reserve separate vertical space for artwork, camera and progress. */
@@ -82,4 +87,74 @@
  .camera-dock{left:24px;bottom:130px;width:230px;max-width:calc(100% - 48px)}
  .progress{left:24px;right:24px;bottom:55px;width:auto}
  .flower-dots{bottom:26px}
+}
+
+
+/* Guided onboarding, with distinct roles for the two hands. */
+.bloom-guide-open{overflow:hidden}
+.gesture-guide{width:min(860px,calc(100vw - 40px));max-height:calc(100svh - 40px);margin:auto;padding:32px 38px 24px;border:1px solid #cbd7c5;border-radius:24px;background:radial-gradient(ellipse at 50% 15%,#fffffa,#eef3e6);color:var(--ink);box-shadow:0 24px 90px #263c3033;overflow:auto}
+.gesture-guide::backdrop{background:rgba(37,54,42,.38);backdrop-filter:blur(5px)}
+.guide-close{position:absolute;right:18px;top:14px}
+.guide-heading{text-align:center;max-width:660px;margin:0 auto 26px}
+.guide-progress{font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.08em}
+.guide-heading h2{font:italic clamp(28px,3.5vw,40px)/1.15 Georgia,serif;margin:10px 0}
+.guide-heading>p:last-child{font-size:13px;color:var(--muted)}
+.guide-step{display:grid;grid-template-columns:210px 1fr;gap:24px;align-items:center;border-top:1px solid var(--line);padding-top:24px}
+.guide-step[hidden],.guide-navigation button[hidden]{display:none}
+.guide-demonstration{padding:16px 0}
+.gesture-drawing{display:block;width:100%;height:auto;overflow:visible}
+.guide-explanation h3{font:normal 24px/1.25 Georgia,serif;margin:12px 0}
+.guide-explanation p,.switch-instructions{font-size:14px;line-height:1.65;color:var(--muted)}
+.guide-step strong{font-weight:650;color:var(--ink)}
+.hand-role{display:inline-block;padding:6px 10px;border-radius:999px;font-size:11px;letter-spacing:.03em;font-weight:650}
+.bloom-role{background:#dcebdc;color:#355d45}.switch-role{background:#f5e2d5;color:#805744}
+.guide-tip{font-size:12px!important;line-height:1.65;color:var(--muted);margin-top:14px;padding:12px 14px;border-radius:12px;background:#ffffff80}
+.switch-instructions{padding-left:20px;margin:0}.switch-instructions li+li{margin-top:8px}
+.guide-together{display:block}
+.two-hand-demo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hand-demo{min-width:0;text-align:center;padding:14px;border:1px solid var(--line);border-radius:18px}
+.bloom-demo{background:#eaf1e580}.switch-demo{background:#f8eee580}
+.hand-demo .gesture-drawing{max-width:190px;margin:12px auto}
+.hand-demo p{font-size:12px;color:var(--muted)}
+.together-instruction{text-align:center;font-size:14px;color:var(--muted);margin-top:18px}
+.guide-footer{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);text-align:center}
+.guide-navigation{display:flex;justify-content:center;gap:10px}
+.guide-manual{display:block;margin:14px auto 0;border:0;background:none;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.guide-footer>p{font-size:11px;color:var(--muted);margin-top:10px}
+.hand-lines{fill:#e2ebd9;stroke:#54765c;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.finger-tip{fill:#c7869e;stroke:#fff8ef;stroke-width:1.5}
+.gesture-arrow{fill:none;stroke:#98ab90;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gesture-drawing text{font:12px system-ui,sans-serif;fill:#54675b}
+.bloom-index{animation:illustrate-index 4s ease-in-out infinite}
+.bloom-thumb{animation:illustrate-thumb 4s ease-in-out infinite}
+.switch-open{animation:illustrate-open 4s ease-in-out infinite}
+.switch-fist{animation:illustrate-fist 4s ease-in-out infinite}
+@keyframes illustrate-index{0%,20%,100%{transform:translateY(7px)}50%,70%{transform:translateY(0)}}
+@keyframes illustrate-thumb{0%,20%,100%{transform:translateY(-6px)}50%,70%{transform:translateY(0)}}
+@keyframes illustrate-open{0%,20%,100%{opacity:1}50%,75%{opacity:.35}}
+@keyframes illustrate-fist{0%,20%,100%{opacity:.35}50%,75%{opacity:1}}
+.camera-gesture-hint{font-size:11px;line-height:1.6;color:var(--muted);margin-bottom:-4px}
+.toolbar-actions{flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:900px){.toolbar .garden-count{width:100%;justify-content:flex-end}}
+@media(max-width:600px){
+ .gesture-guide{width:calc(100vw - 20px);max-height:calc(100svh - 20px);padding:30px 20px 20px}
+ .guide-step{grid-template-columns:1fr;gap:12px;padding-top:16px}
+ .guide-demonstration{width:170px;justify-self:center;padding:0}
+ .guide-heading{margin-bottom:18px}.guide-explanation h3{font-size:22px}
+ .two-hand-demo{gap:8px}.hand-demo{padding:10px 6px}.hand-role{padding:6px;font-size:10px}
+ .toolbar{gap:10px}.toolbar-actions{gap:6px;max-width:240px}
+ .toolbar-actions .button{font-size:10px;padding:7px 9px}
+}
+@media(prefers-reduced-motion:reduce){.gesture-drawing g,.pinch-outline{animation:none!important;opacity:1}}
+
+/* A continuous, reference-inspired silhouette bends into the pinch. */
+.pinch-outline{animation:illustrate-pinch 4s ease-in-out infinite}
+@keyframes illustrate-pinch{0%,20%,100%{d:path("M155 108 C136 100 127 88 122 72 L117 45 Q115 32 103 29 L80 21 Q72 19 65 24 L46 40 L24 55 Q17 58 21 62 Q25 66 32 61 L51 49 Q57 47 62 50 L76 55 Q83 57 86 62 Q87 69 76 73 Q67 76 58 72 L33 66 Q23 61 19 66 Q15 71 22 75 L49 84 Q61 106 80 114 L125 140 L167 140 Z")}50%,70%{d:path("M155 108 C136 100 127 88 122 72 L117 45 Q115 32 103 29 L80 21 Q72 19 65 24 L46 35 L24 49 Q17 52 21 56 Q25 60 32 56 L51 43 Q57 42 62 47 L76 53 Q83 55 86 62 Q87 72 76 79 Q67 83 58 80 L33 69 Q23 64 19 69 Q15 74 22 79 L49 91 Q61 106 80 114 L125 140 L167 140 Z")}}
+
+/* Compact flower copy on shorter windows without crossing the arrow row. */
+@media(max-height:850px){
+ .camera-dock{gap:10px}
+ .camera-dock .flower-label h1{font-size:20px;line-height:1.2;margin:6px 0}
+ .camera-dock .flower-label p{font-size:10.5px;line-height:1.4}
+ .camera-dock .camera-gesture-hint{font-size:10.5px;line-height:1.5}
 }
